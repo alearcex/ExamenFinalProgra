@@ -1,0 +1,51 @@
+CREATE DATABASE ExamenFinal
+
+CREATE TABLE Persona(
+Cedula VARCHAR(10) PRIMARY KEY,
+Nombre VARCHAR(20) NOT NULL,
+PrimerApellido VARCHAR(10) NOT NULL,
+SegundoApellido VARCHAR(10), 
+PaisNacimiento VARCHAR(20) NOT NULL,
+Nacionalidad VARCHAR(20)NOT NULL,
+Telefono INT NOT NULL,
+Edad INT CHECK (Edad > 0),
+Habilitado bit	
+)
+
+CREATE TABLE Oficial(
+IdOficial INT PRIMARY KEY, 
+Nombre VARCHAR(40) NOT NULL,
+Rango VARCHAR (15) DEFAULT 'Subteniente'
+)
+
+CREATE TABLE Usuario(
+IdOficial INT PRIMARY KEY,
+Contraseña VARCHAR(8) NOT NULL
+)
+ALTER TABLE Usuario ADD CONSTRAINT FK_Oficial_Usuario FOREIGN KEY (IdOficial) REFERENCES Oficial(IdOficial)
+
+CREATE TABLE Salidas(
+IdSalida INT IDENTITY PRIMARY KEY,
+Cedula VARCHAR(10)NOT NULL,
+Destino VARCHAR(25)NOT NULL,
+Fecha DATETIME NOT NULL,
+PuntoSalida VARCHAR(30) NOT NULL,
+IdOficial INT NOT NULL
+)
+ALTER TABLE Salidas ADD CONSTRAINT FK_Oficial_Salidas FOREIGN KEY (IdOficial) REFERENCES Oficial(IdOficial)
+ALTER TABLE Salidas ADD CONSTRAINT FK_Persona_Salidas FOREIGN KEY (Cedula) REFERENCES Persona(Cedula)
+
+
+CREATE TABLE Entradas(
+IdEntrada INT IDENTITY PRIMARY KEY,
+Cedula VARCHAR(10)NOT NULL,
+Origen VARCHAR(25)NOT NULL,
+Fecha DATETIME NOT NULL,
+PuntoEntrada VARCHAR(30) NOT NULL,
+IdOficial INT NOT NULL
+)
+
+ALTER TABLE Entradas ADD CONSTRAINT FK_Oficial_Entradas FOREIGN KEY (IdOficial) REFERENCES Oficial(IdOficial)
+ALTER TABLE Entradas ADD CONSTRAINT FK_Persona_Entradas FOREIGN KEY (Cedula) REFERENCES Persona(Cedula)
+
+
